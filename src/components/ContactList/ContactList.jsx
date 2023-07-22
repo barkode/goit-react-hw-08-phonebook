@@ -2,8 +2,12 @@ import PropType from 'prop-types';
 import React from 'react';
 import { Button, List, ListItem } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getIsLoading, getStatusFilter } from 'redux/selectors';
-import { deleteContact } from 'redux/operations';
+import {
+  getContacts,
+  getIsLoading,
+  getStatusFilter,
+} from 'redux/contacts/selectors';
+import { deleteContact } from 'redux/contacts/operations';
 import { CircularProgress } from '@mui/material';
 
 function ContactList() {
