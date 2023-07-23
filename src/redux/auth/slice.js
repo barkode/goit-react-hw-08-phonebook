@@ -4,7 +4,7 @@ import { signUp, logIn, logOut, refreshUser } from 'redux/auth/operations';
 const initialState = {
   user: { name: null, email: null, password: null },
   token: null,
-  isLoggedIn: false,
+  isSignedIn: false,
   isRefreshing: false,
   error: null,
 };
@@ -20,7 +20,7 @@ const authSlice = createSlice({
       .addCase(signUp.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoggedIn = true;
+        state.isSignedIn = true;
         state.isRefreshing = false;
       })
       .addCase(signUp.rejected, (state, action) => {
@@ -32,7 +32,7 @@ const authSlice = createSlice({
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoggedIn = true;
+        state.isSignedIn = true;
         state.isRefreshing = false;
       })
       .addCase(logIn.rejected, (state, action) => {
@@ -44,7 +44,7 @@ const authSlice = createSlice({
       .addCase(logOut.fulfilled, state => {
         state.user = { name: null, email: null, password: null };
         state.token = null;
-        state.isLoggedIn = false;
+        state.isSignedIn = false;
         state.isRefreshing = false;
       })
       .addCase(logOut.rejected, (state, action) => {
@@ -55,7 +55,7 @@ const authSlice = createSlice({
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isLoggedIn = true;
+        state.isSignedIn = true;
         state.isRefreshing = false;
       })
       .addCase(refreshUser.rejected, state => {
