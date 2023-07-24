@@ -1,54 +1,54 @@
-import PropType from 'prop-types';
-import React from 'react';
-import { Button, List, ListItem } from './ContactList.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getContacts,
-  getIsLoading,
-  getStatusFilter,
-} from 'redux/contacts/selectors';
-import { deleteContact } from 'redux/contacts/operations';
-import { CircularProgress } from '@mui/material';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchContacts } from 'redux/contacts/operations';
+import ContactItem from 'components/ContactItem/ContactItem';
+import { getContacts, getIsLoading } from 'redux/contacts/selectors';
+import { getStatusFilter } from 'redux/contacts/selectors';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import CircularProgress from '@mui/material/CircularProgress';
+import SearchIcon from '@mui/icons-material/Search';
 
-function ContactList() {
+const ContactList = () => {
+  const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   const filter = useSelector(getStatusFilter);
   const isLoading = useSelector(getIsLoading);
-  const dispatch = useDispatch();
-  const handleDeleteContact = id => dispatch(deleteContact(id));
 
-  const filterContact = contacts.filter(contact =>
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  if (!contacts) {
+    return <CircularProgress />; 
+  }
+
+  const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
-    <List>
-      {filterContact.map(({ id, name, number }) => {
-        return (
-          <ListItem key={id}>
-            {name} || {number}
-            <Button
-              type="button"
-              title="Delete contact"
-              onClick={() => handleDeleteContact(id)}
-            ></Button>
-            {isLoading && <CircularProgress />}
-          </ListItem>
-        );
-      })}
-    </List>
+    <Box sx={{ padding: '20px' }}>
+      <Typography variant="h5" sx={{ marginBottom: '20px' }}>
+        <SearchIcon sx={{ marginRight: '10px' }} />
+        Contact List
+      </Typography>
+      <List>
+        {filteredContacts.map(contact => (
+          <ContactItem key={contact.id} contact={contact} />
+        ))}
+      </List>
+      {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <CircularProgress size={20} />
+          <Typography variant="body2" sx={{ marginLeft: '10px' }}>
+            Updating list...
+          </Typography>
+        </Box>
+      )}
+    </Box>
   );
-}
+};
 
 export default ContactList;
-
-ContactList.propTypes = {
-  contacts: PropType.arrayOf(
-    PropType.shape({
-      id: PropType.string.isRequired,
-      name: PropType.string.isRequired,
-      number: PropType.string.isRequired,
-    })
-  ),
-  handleDeleteContact: PropType.func,
-};

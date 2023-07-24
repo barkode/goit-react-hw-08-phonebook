@@ -1,32 +1,82 @@
-import React, { useEffect } from 'react';
-import { fetchContacts } from 'redux/contacts/operations';
-import { useDispatch, useSelector } from 'react-redux';
-import { getError, getIsLoading } from 'redux/contacts/selectors';
-import ContactForm from 'components/ContactForm/ContactForm';
-import Filter from 'components/Filter/Filter';
-import ContactList from 'components/ContactList/ContactList';
-import { Container } from './App.styled';
-import { LinearProgress } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Layout from 'components/Layout/Layout';
+import Home from 'components/Home/Home';
+import NotFound from '../NotFound/NotFound';
+import { useDispatch } from 'react-redux';
+import { refreshUser } from 'redux/auth/operations';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { PublicRoute } from 'components/PublicRoute';
+import { useAuth } from 'redux/auth/useAuth';
+import Loader from 'components/Loader/Loader';
+import ErrorPage from 'components/ErrorPage/ErrorPage';
+import { AppContainer } from './App.styled';
 
-export function App() {
+const RegisterPage = lazy(() =>
+  import('pages/RegistrationPage/RegistrationPage')
+);
+const ContactsPage = lazy(() => import('pages/ContactPage/ContactPage'));
+
+const LoginPage = lazy(() => import('pages/LoginPage/LoginPage'));
+
+export const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
-
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <Container>
-      {isLoading && !error && <LinearProgress />}
-      <h1>Phone book</h1>
-      <ContactForm />
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactList />
-    </Container>
-  );
-}
+  const { isRefreshing, error } = useAuth();
 
-export default App;
+  if (error) {
+    return <ErrorPage />;
+  }
+
+  return isRefreshing ? (
+    <Loader />
+  ) : (
+    <AppContainer>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute
+                redirectTo="/contacts"
+                component={<RegisterPage />}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute redirectTo="/contacts" component={<LoginPage />} />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+            }
+          />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </AppContainer>
+  );
+};

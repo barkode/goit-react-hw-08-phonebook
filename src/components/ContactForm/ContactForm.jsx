@@ -1,90 +1,108 @@
-import propTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Button, FieldName, Form, Input } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/contacts/selectors';
-import { addContact } from 'redux/contacts/operations';
+import { addContact } from '../../redux/contacts/operations';
+import { toast } from 'react-toastify';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { getContacts, getError } from '../../redux/contacts/selectors';
 
-function ContactForm() {
+
+const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
+  const error = useSelector(getError);
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        break;
-    }
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    name === 'name' ? setName(value) : setNumber(value);
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const dispatch = useDispatch();
 
+  const handleSubmit = event => {
+    event.preventDefault();
     if (name.trim() !== '' && number.trim() !== '') {
       const isExistingContact = contacts.some(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       );
 
       if (isExistingContact) {
-        alert(`${name} is already in contacts`);
+        toast.error(`${name} is already in contacts.`);
         return;
       }
 
-      const newContact = {
-        name: name.trim(),
-        number: number.trim(),
-      };
+      if (error) {
+        toast.error('Failed to load contacts. Please try again later.');
+        return;
+      }
 
-      dispatch(addContact(newContact));
-      setName('');
-      setNumber('');
+      dispatch(addContact({ name, number }));
+      toast.success(`${name} added to contacts.`);
+      reset();
     }
   };
 
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <FieldName>Abonent name</FieldName>
-      <Input
-        type="text"
-        name="name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        placeholder="Enter abonent name"
-        value={name}
-        onChange={handleChange}
-        required
-      />
-      <FieldName>Abonent phone number</FieldName>
-      <Input
-        type="tel"
-        name="number"
-        pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        placeholder="Enter phone number"
-        value={number}
-        onChange={handleChange}
-        required
-      />
-      <p>
-        <Button type="submit">Add contact</Button>
-      </p>
-    </Form>
+    <>
+      <Box
+        sx={{
+          marginTop: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: '400px',
+          margin: '0 auto',
+        }}
+      >
+        {error && (
+          <Typography variant="body2" color="error" gutterBottom>
+            Failed to load contacts. Please try again later.
+          </Typography>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <TextField
+            type="text"
+            name="name"
+            label="Name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            value={name}
+            onChange={handleInputChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+
+          <TextField
+            type="tel"
+            name="number"
+            label="Number"
+            pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            value={number}
+            onChange={handleInputChange}
+            required
+            fullWidth
+            margin="normal"
+          />
+
+          <Button type="submit" variant="contained" sx={{ width: '40%' }}>
+            Add Contact
+          </Button>
+        </form>
+      </Box>
+    </>
   );
-}
+};
 
 export default ContactForm;
-
-ContactForm.propTypes = {
-  name: propTypes.string,
-  number: propTypes.string,
-  onSubmit: propTypes.func,
-};

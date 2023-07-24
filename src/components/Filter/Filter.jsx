@@ -1,34 +1,31 @@
-import PropType from 'prop-types';
 import React from 'react';
-import { FieldName, Input, Label } from './Filter.styled';
 import { useDispatch } from 'react-redux';
 import { setFilter } from 'redux/contacts/filterSlice';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 const Filter = () => {
   const dispatch = useDispatch();
 
-  const handleChangeFilter = e => {
-    const { value } = e.target;
-    dispatch(setFilter(value.toLowerCase().trim()));
+  const handleFilterChange = (event) => {
+    const filterValue = event.target.value;
+    dispatch(setFilter(filterValue));
   };
 
   return (
-    <Label>
-      <FieldName>Find abonent by Name</FieldName>
-      <Input
+    <Box sx={{ marginBottom: '1rem', maxWidth: '300px' }}>
+      <Typography variant="body1" gutterBottom>
+        Find contacts by name:
+      </Typography>
+      <TextField
         type="text"
-        name="filter"
-        title="To find abonent enter they name"
-        placeholder="Searching ....."
-        onChange={handleChangeFilter}
+        onChange={handleFilterChange}
+        placeholder="search..."
+        margin="normal"
       />
-    </Label>
+    </Box>
   );
 };
 
 export default Filter;
-
-Filter.propTypes = {
-  filter: PropType.string,
-  onFilterChange: PropType.func,
-};
