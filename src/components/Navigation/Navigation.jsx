@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from 'redux/auth/useAuth';
+import { Button } from '@mui/material';
 
 const StyledLink = styled(NavLink)`
   color: black;
@@ -11,7 +12,7 @@ const StyledLink = styled(NavLink)`
 `;
 
 const Navigation = () => {
-  const { isSignedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <nav
       style={{
@@ -19,8 +20,14 @@ const Navigation = () => {
         gap: 20,
       }}
     >
-      <StyledLink to="/">Phone book</StyledLink>
-      {isSignedIn && <StyledLink to="/contacts">Contacts</StyledLink>}
+      <StyledLink to="/">
+        <Button variant="outlined">Home</Button>
+      </StyledLink>
+      {isLoggedIn && (
+        <StyledLink to="/contacts">
+          <Button variant="outlined">Contacts</Button>
+        </StyledLink>
+      )}
     </nav>
   );
 };

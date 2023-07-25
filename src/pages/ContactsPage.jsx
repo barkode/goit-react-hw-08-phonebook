@@ -1,11 +1,17 @@
 import ContactsForm from 'components/ContactForm/ContactForm';
 import ContactList from 'components/ContactList/ContactList';
 import Filter from 'components/Filter/Filter';
-import { Container } from './ContactPage.styled';
 
-const ContactPage = () => {
+const ContactsPage = () => {
   return (
-    <Container>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        padding: '1rem',
+      }}
+    >
       <section>
         <ContactsForm />
       </section>
@@ -15,8 +21,8 @@ const ContactPage = () => {
       <section>
         <ContactList />
       </section>
-    </Container>
+    </div>
   );
 };
 
-export default ContactPage;
+export default ContactsPage;

@@ -5,13 +5,13 @@ import Loader from 'components/Loader/Loader';
 import { useAuth } from 'redux/auth/useAuth';
 
 const Layout = ({ children }) => {
-  const { isSignedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <div>
       <Header />
       <div>{children}</div>
-      {!isSignedIn}
+      {!isLoggedIn}
       <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>

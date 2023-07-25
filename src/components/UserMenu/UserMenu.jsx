@@ -27,10 +27,12 @@ const UserMenu = () => {
 
   return (
     <UserMenuContainer>
-      <Avatar sx={{ width: 32, height: 32, borderRadius: '50%' }} />
-      <UserName>{user.name}</UserName>
+      <Avatar sx={{ bgcolor: '#afa' }} variant="rounded" />
+      <UserName>
+        <Button variant="text">{user.name}</Button>
+      </UserName>
       <Button variant="outlined" onClick={onLogout} endIcon={<LogoutIcon />}>
-        Sign Out
+        Logout
       </Button>
     </UserMenuContainer>
   );

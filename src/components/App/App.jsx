@@ -2,24 +2,27 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from 'components/Layout/Layout';
-import Home from 'components/Home/Home';
+import Layout from '../Layout/Layout';
+import Home from '../Home/Home';
 import NotFound from '../NotFound/NotFound';
 import { useDispatch } from 'react-redux';
 import { refreshUser } from 'redux/auth/operations';
-import { PrivateRoute } from 'components/PrivateRoute';
-import { PublicRoute } from 'components/PublicRoute';
+import { PrivateRoute } from '../PrivateRoute';
+import { PublicRoute } from '../PublicRoute';
 import { useAuth } from 'redux/auth/useAuth';
-import Loader from 'components/Loader/Loader';
-import ErrorPage from 'components/ErrorPage/ErrorPage';
-import { AppContainer } from './App.styled';
+import Loader from '../Loader/Loader';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 const RegisterPage = lazy(() =>
-  import('pages/RegistrationPage/RegistrationPage')
+  import('../../pages/RegisterPage' /* webpackChunkName: "register-page" */)
 );
-const ContactsPage = lazy(() => import('pages/ContactPage/ContactPage'));
+const ContactsPage = lazy(() =>
+  import('../../pages/ContactsPage' /* webpackChunkName: "contacts-page" */)
+);
 
-const LoginPage = lazy(() => import('pages/LoginPage/LoginPage'));
+const LoginPage = lazy(() =>
+  import('../../pages/Login' /* webpackChunkName: "login-page" */)
+);
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -36,7 +39,7 @@ export const App = () => {
   return isRefreshing ? (
     <Loader />
   ) : (
-    <AppContainer>
+    <div>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -68,7 +71,7 @@ export const App = () => {
       <ToastContainer
         position="top-center"
         autoClose={1500}
-        hideProgressBar
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
@@ -77,6 +80,6 @@ export const App = () => {
         pauseOnHover
         theme="colored"
       />
-    </AppContainer>
+    </div>
   );
 };

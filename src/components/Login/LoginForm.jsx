@@ -31,7 +31,7 @@ const Login = () => {
     }
 
     try {
-      await dispatch(logIn({ email, password }));
+      dispatch(logIn({ email, password }));
 
       setEmail('');
       setPassword('');
@@ -95,7 +95,7 @@ const Login = () => {
           />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <Button type="submit" variant="contained" sx={{ width: '40%' }}>
+            <Button type="submit" variant="outlined" sx={{ width: '40%' }}>
               Login
             </Button>
             <Link to="/register">Don't have an account? Sign Up</Link>

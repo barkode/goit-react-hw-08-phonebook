@@ -64,7 +64,7 @@ const Register = () => {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          Registration
+          Register
         </Typography>
 
         {error && (
@@ -117,7 +117,7 @@ const Register = () => {
             required
           />
 
-          <Button type="submit" variant="contained" fullWidth>
+          <Button type="submit" variant="outlined" fullWidth>
             Register
           </Button>
         </Box>

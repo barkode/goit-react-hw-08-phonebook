@@ -24,7 +24,14 @@ const ContactItem = ({ contact }) => {
         <PersonIcon sx={{ marginRight: '5px' }} />
         <Typography variant="h6">{contact.name}</Typography>
       </Box>
-      <Box sx={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box
+        sx={{
+          flex: '1',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <PhoneIcon sx={{ marginRight: '5px' }} />
         <Typography variant="body1">{contact.number}</Typography>
       </Box>

@@ -2,14 +2,16 @@ import { MutatingDots } from 'react-loader-spinner';
 
 const Loader = () => {
   return (
-    <div style={{
+    <div
+      style={{
         display: 'flex',
 
         justifyContent: 'center',
         alignItems: 'center',
-        margn: '0 auto',
+        margin: '0 auto',
         marginTop: '5rem',
-    }}>
+      }}
+    >
       <MutatingDots
         height="100"
         width="100"

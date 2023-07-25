@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
+import { Button } from '@mui/material';
 
 const StyledLink = styled(NavLink)`
   color: black;
@@ -19,8 +20,12 @@ const NavigationContainer = styled(Box)({
 const Navigation = () => {
   return (
     <NavigationContainer component="nav">
-      <NavLink to="/register">Register</NavLink>
-      <StyledLink to="/login">Login</StyledLink>
+      <StyledLink to="/register">
+        <Button variant="outlined">Register</Button>
+      </StyledLink>
+      <StyledLink to="/login">
+        <Button variant="outlined">Login</Button>
+      </StyledLink>
     </NavigationContainer>
   );
 };
