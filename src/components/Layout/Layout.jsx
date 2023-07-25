@@ -12,6 +12,7 @@ const Layout = ({ children }) => {
       <Header />
       <div>{children}</div>
       {!isLoggedIn}
+
       <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
