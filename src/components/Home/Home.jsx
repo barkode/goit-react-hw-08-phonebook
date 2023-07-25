@@ -1,9 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import { useAuth } from 'redux/auth/useAuth';
-import { toast } from 'react-toastify';
-import background from '../../images/background.jpg';
-
 const Home = () => {
   return (
     <div
