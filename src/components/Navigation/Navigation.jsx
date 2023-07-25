@@ -1,15 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
 import { useAuth } from 'redux/auth/useAuth';
 import { Button } from '@mui/material';
-
-const StyledLink = styled(NavLink)`
-  color: black;
-
-  &.active {
-    color: orange;
-  }
-`;
 
 const Navigation = () => {
   const { isLoggedIn } = useAuth();
@@ -20,13 +11,13 @@ const Navigation = () => {
         gap: 20,
       }}
     >
-      <StyledLink to="/">
+      <NavLink to="/">
         <Button variant="outlined">Home</Button>
-      </StyledLink>
+      </NavLink>
       {isLoggedIn && (
-        <StyledLink to="/contacts">
+        <NavLink to="/contacts">
           <Button variant="outlined">Contacts</Button>
-        </StyledLink>
+        </NavLink>
       )}
     </nav>
   );

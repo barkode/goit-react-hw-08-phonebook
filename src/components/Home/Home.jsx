@@ -8,8 +8,6 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center',
         fontSize: 40,
-        color: '#afa',
-        backgroundColor: '#afafaf',
         backgroundSize: 'cover',
         resizeMode: 'cover',
         backgroundPosition: 'center',
